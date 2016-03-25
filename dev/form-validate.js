@@ -30,22 +30,53 @@
             var validationCheckList = $input.attr(selfed.options.attributeUsed).toLowerCase().split(',');
             var validationRules = $.fn.formValidate.validationRules;
             var currentText = $input.val();
+            var allTestsCleared = true;
             var pattern;
             var text;
             var i;
             var j;
 
+            console.log(validationCheckList);
             //iterate over all validations for this input
             for(j = validationRules.length - 1; j >= 0; --j){
                 pattern = validationRules[j].pattern;
                 for(i = validationCheckList.length - 1; i >= 0; --i){
-                    if(validationRules[j].name == validationCheckList[i]){
+                    if(validationRules[j].name == validationCheckList[i].trim()){
+                        //console.log('testing for %s', validationCheckList[i]);
                         //trim the text if option is set
                         text = (validationRules[j].hasOwnProperty('trim') && validationRules[j].trim) ? currentText.trim() : currentText;
-                        console.log(pattern.test(text));
+                        if(pattern.test(text)){
+                            //test passed
+                            selfed.testPassed($input, validationCheckList[i], allTestsCleared);
+                        }
+                        else{
+                            //test failed
+                            allTestsCleared = false;
+                            selfed.testFailed($input, validationCheckList[i], allTestsCleared);
+                        }
                     }
                 }
             }
+        },
+
+        testFailed: function ($input, test, allTestsCleared) {
+            //add error class, remove success class
+            $input
+                .addClass(test+'-invalid')
+                .removeClass(test+'-valid');
+            $input
+                .toggleClass('valid', allTestsCleared)
+                .toggleClass('invalid', !allTestsCleared);
+        },
+
+        testPassed: function ($input, test, allTestsCleared) {
+            //add success class, remove error class
+            $input
+                .addClass(test+'-valid')
+                .removeClass(test+'-invalid');
+            $input
+                .toggleClass('valid', allTestsCleared)
+                .toggleClass('invalid', !allTestsCleared);
         }
     };
     //plugin Class ends
