@@ -26,6 +26,8 @@
             <form>
                 <input type="text" data-formvalidate="number" value="12">
                 <br>
+                <input type="text" data-formvalidate="number" value="56">
+                <br>
                 <input type="submit" value="Submit">
             </form>
         </div>
@@ -33,7 +35,10 @@
         <script src="js/form-validate.min.js"></script>
         <script>
             (function(){
-                
+                $('form').formValidate({
+                    attributeUsed: 'data-formvalidate',
+                    triggerUsed: 'keyup'
+                });
             })();
         </script>
     </body>
