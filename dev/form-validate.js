@@ -29,17 +29,20 @@
             var selfed = this;
             var validationCheckList = $input.attr(selfed.options.attributeUsed).toLowerCase().split(',');
             var validationRules = $.fn.formValidate.validationRules;
+            var currentText = $input.val();
             var pattern;
+            var text;
             var i;
             var j;
-            
+
             //iterate over all validations for this input
-            for(i = validationCheckList.length - 1; i >= 0; --i){
-                for(j = validationRules.length - 1; j >= 0; --j){
+            for(j = validationRules.length - 1; j >= 0; --j){
+                pattern = validationRules[j].pattern;
+                for(i = validationCheckList.length - 1; i >= 0; --i){
                     if(validationRules[j].name == validationCheckList[i]){
-                        pattern = validationRules[j].pattern;
-                        console.log($input.val());
-                        console.log( pattern.test($input.val().trim()) );
+                        //trim the text if option is set
+                        text = (validationRules[j].hasOwnProperty('trim') && validationRules[j].trim) ? currentText.trim() : currentText;
+                        console.log(pattern.test(text));
                     }
                 }
             }
@@ -73,7 +76,14 @@
         {
             name: 'number',
             errorMessage: 'Entry must be a Number.',
-            pattern: /^((\d*)|(\d*\.\d+))$/g
+            pattern: /^[-+]?\d*\.?\d+$/,
+            trim: false
+        },
+        {
+            name: 'required',
+            errorMessage: 'Entry mustn\'t be empty',
+            pattern: /.+/,
+            trim: true
         }
     ];
 
