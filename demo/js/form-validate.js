@@ -25,24 +25,34 @@
 
         bindEvents: function () {
             var selfed = this;
-            
+
             //bind input events
             selfed.$inputs.on(selfed.options.triggerUsed, function () {
                 selfed.validateInput($(this));
             });
-            
+
             //bind form submit event
             selfed.$formElement.on('submit', function (event) {
                 event.preventDefault();
                 selfed.validateAllInputs();
             });
         },
-        
+
         validateAllInputs: function () {
             var selfed = this;
+            var $input;
+
+            //validate each input in the form
             selfed.$inputs.each(function (index, input) {
                 selfed.validateInput($(input));
             });
+
+            //scroll to error if option is enabled
+            if(selfed.options.scroll){
+                //find first error input
+                $input = selfed.$inputs.filter('.invalid').eq(0);
+                selfed.scrollToElement($input);
+            }
         },
 
         validateInput: function ($input) {
@@ -123,6 +133,14 @@
                 }
                 $('[data-formmsg="' + selfed.formName + '"]').empty().append($errorItems);
             }
+        },
+
+        scrollToElement: function ($element) {
+            if($element.length){
+                $('body').animate({
+                    scrollTop: $element.offset().top - 10
+                }, 300);
+            }
         }
     };
     //plugin Class ends
@@ -163,7 +181,7 @@
             trim: true
         }
     ];
-    
+
     //configure custom validation rules
     $.fn.formValidate.addRules = function (configObj) {
         $.fn.formValidate.validationRules.push(configObj);
