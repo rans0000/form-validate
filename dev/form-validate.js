@@ -25,8 +25,23 @@
 
         bindEvents: function () {
             var selfed = this;
+            
+            //bind input events
             selfed.$inputs.on(selfed.options.triggerUsed, function () {
                 selfed.validateInput($(this));
+            });
+            
+            //bind form submit event
+            selfed.$formElement.on('submit', function (event) {
+                event.preventDefault();
+                selfed.validateAllInputs();
+            });
+        },
+        
+        validateAllInputs: function () {
+            var selfed = this;
+            selfed.$inputs.each(function (index, input) {
+                selfed.validateInput($(input));
             });
         },
 
