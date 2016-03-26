@@ -16,7 +16,10 @@
             selfed.$inputs = selfed.$formElement.find('[' + selfed.options.attributeUsed + ']');
             selfed.formName = selfed.$formElement.attr('name');
             selfed.formErrorList = [];
+            selfed.appName = 'formValidate';
+            selfed.appVersion = '0.1.0';
 
+            selfed.$formElement.data(selfed.appName, selfed);
             selfed.bindEvents();
         },
 
@@ -145,5 +148,10 @@
             trim: true
         }
     ];
+    
+    //configure custom validation rules
+    $.fn.formValidate.addRules = function (configObj) {
+        $.fn.formValidate.validationRules.push(configObj);
+    };
 
 })(jQuery, window, document);

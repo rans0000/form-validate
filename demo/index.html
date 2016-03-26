@@ -7,22 +7,22 @@
     </head>
     <body>
         <div class="wrapper-all">
-           <h1>Form Validator Plugin Demo</h1>
+            <h1>Form Validator Plugin Demo</h1>
             <!--<form id="myForm">
-                <div class="input">
-                    <input type="text" placeholder="Enter Age">
-                    <label>Age</label>
-                    <span class="err_input"></span>
-                </div>
-                <div class="input">
-                    <input type="text" placeholder="Enter your name">
-                    <label>Your Name</label>
-                    <span class="err_input"></span>
-                </div>
-                <div class="submit-group">
-                    <input type="submit" value="Submit">
-                </div>
-            </form>-->
+<div class="input">
+<input type="text" placeholder="Enter Age">
+<label>Age</label>
+<span class="err_input"></span>
+</div>
+<div class="input">
+<input type="text" placeholder="Enter your name">
+<label>Your Name</label>
+<span class="err_input"></span>
+</div>
+<div class="submit-group">
+<input type="submit" value="Submit">
+</div>
+</form>-->
             <form name="myForm">
                 <div data-formmsg="myForm"></div>
                 <br>
@@ -44,6 +44,13 @@
                     attributeUsed: 'data-formvalidate',
                     triggerUsed: 'keyup'
                 });
+
+                /*$.fn.formValidate.addRules({
+                    name: 'required',
+                    errorMessage: 'Entry mustn\'t be empty',
+                    pattern: /.+/,
+                    trim: true
+                });*/
             })();
         </script>
     </body>
