@@ -8,32 +8,27 @@
     <body>
         <div class="wrapper-all">
             <h1>Form Validator Plugin Demo</h1>
-            <!--<form id="myForm">
+            <form name="myForm">
                 <div class="input">
-                    <input type="text" placeholder="Enter Age">
-                    <label>Age</label>
-                    <span class="err_input"></span>
+                    <input type="text" placeholder="Username" data-formvalidate="required" name="name">
+                    <label>Name</label>
+                    <span class="err_input" data-formmsg="myForm.name"></span>
                 </div>
                 <div class="input">
-                    <input type="text" placeholder="Enter your name">
-                    <label>Your Name</label>
-                    <span class="err_input"></span>
+                    <input type="text" placeholder="Enter Age" data-formvalidate="number" value="12" name="age">
+                    <label>Age</label>
+                    <span class="err_input" data-formmsg="myForm.age"></span>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Enter your name" data-formvalidate="email" value="" name="email">
+                    <label>Email</label>
+                    <span class="err_input" data-formmsg="myForm.email"></span>
                 </div>
                 <div class="submit-group">
                     <input type="submit" value="Submit">
                 </div>
-            </form>-->
-            <form name="myForm">
-                <div data-formmsg="myForm"></div>
-                <br>
-                <input type="text" data-formvalidate="number" value="12" name="age">
-                <span data-formmsg="myForm.age"></span>
-                <br>
-                <input type="text" data-formvalidate="number, required" value="56" name="req">
-                <span data-formmsg="myForm.req"></span>
-                <br>
-                <input type="submit" value="Submit">
             </form>
+            <div class="error-list" data-formmsg="myForm"></div>
         </div>
         <script src="js/jquery-1.12.2.min.js"></script>
         <script src="js/form-validate.js"></script>
@@ -45,12 +40,12 @@
                     triggerUsed: 'keyup'
                 });
 
-                /*$.formValidate.addRules({
-                    name: 'required',
-                    errorMessage: 'Entry mustn\'t be empty',
-                    pattern: /.+/,
-                    trim: true
-                });*/
+                $.formValidate.addRules({
+                    name: 'email',
+                    errorMessage: 'Entry must be an email.',
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    trim: false
+                });
             })();
         </script>
     </body>

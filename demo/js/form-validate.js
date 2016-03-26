@@ -69,6 +69,7 @@
             var currentText = $input.val();
             var isAllTestsPassed = true;
             var pattern;
+            var result;
             var text;
             var i;
             var j;
@@ -81,7 +82,11 @@
 
                         //trim the text if option is set
                         text = (validationRules[j].hasOwnProperty('trim') && validationRules[j].trim) ? currentText.trim() : currentText;
-                        if(pattern.test(text)){
+                        
+                        //accounting for empty inputs
+                        result = (text === '' && validationRules[j].name !== 'required') ? true : pattern.test(text);
+                        
+                        if(result){
                             //test passed
                             selfed.updateValidationClass($input, validationCheckList[i], true, isAllTestsPassed);
                         }
@@ -186,7 +191,7 @@
         },
         {
             name: 'required',
-            errorMessage: 'Entry mustn\'t be empty',
+            errorMessage: 'Entry mustn\'t be empty.',
             pattern: /.+/,
             trim: true
         }

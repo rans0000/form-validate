@@ -99,3 +99,16 @@ input[type="submit"]:active,button[type="submit"]:active{
     outline-width: 0;
     text-shadow: -1px -1px rgba(0,0,0,.3);
 }
+.error-list{
+    position: fixed;
+    right: 10px;
+    top: 10px;
+}
+.error-list > p{
+    font-size: 12px;
+    background: #ddd;
+    padding: 4px 10px;
+    margin-bottom: 1px;
+    line-height: 15px;
+    font-family: monospace;
+}
