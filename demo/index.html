@@ -10,24 +10,29 @@
             <h1>Form Validator Plugin Demo</h1>
             <form name="myForm">
                 <div class="input">
-                    <input type="text" placeholder="Username" data-formvalidate="required" name="name">
-                    <label>Name</label>
-                    <span class="err_input" data-formmsg="myForm.name"></span>
+                    <input type="text" placeholder="Username" data-formvalidate="required" id="username" name="username">
+                    <label for="username">Name</label>
+                    <span class="err_input" data-formmsg="myForm.username"></span>
                 </div>
                 <!--<div class="input">
-                    <input type="text" placeholder="Enter Age" data-formvalidate="number" value="12" name="age">
-                    <label>Age</label>
+                    <input type="text" placeholder="Enter Age" data-formvalidate="number" value="12" id="age" name="age">
+                    <label for="age">Age</label>
                     <span class="err_input" data-formmsg="myForm.age"></span>
                 </div>-->
                 <div class="input">
-                    <input type="text" placeholder="Enter your email" data-formvalidate="email" value="" name="email">
-                    <label>Email</label>
+                    <input type="text" placeholder="Enter your email" data-formvalidate="email" value="" id="email" name="email">
+                    <label for="email">Email</label>
                     <span class="err_input" data-formmsg="myForm.email"></span>
                 </div>
                 <div class="input">
-                    <input type="text" placeholder="Enter Mobile No." data-formvalidate="mobile" value="" name="mobile">
-                    <label>Mobile No.</label>
+                    <input type="text" placeholder="Enter Mobile No." data-formvalidate="mobile" value="" id="mobile" name="mobile">
+                    <label for="mobile">Mobile No.</label>
                     <span class="err_input" data-formmsg="myForm.mobile"></span>
+                </div>
+                <div class="input">
+                    <input type="password" placeholder="Enter Password" data-formvalidate="async" value="" id="password" name="password">
+                    <label for="password">Password</label>
+                    <span class="err_input" data-formmsg="myForm.password"></span>
                 </div>
                 <div class="submit-group">
                     <input type="submit" value="Submit">
@@ -42,7 +47,9 @@
             (function(){
                 $('form').formValidate({
                     attributeUsed: 'data-formvalidate',
-                    triggerUsed: 'keyup'
+                    triggerUsed: 'keyup',
+                    asyncPattern: true,
+                    asyncURL: 'server.json'
                 });
 
                 $.formValidate.addRules({

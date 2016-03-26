@@ -16,6 +16,8 @@
             selfed.$inputs = selfed.$formElement.find('[' + selfed.options.attributeUsed + ']');
             selfed.formName = selfed.$formElement.attr('name');
             selfed.formErrorList = [];
+            selfed.isFormValid = true;
+            selfed.isInlineInputsValid = true;
             selfed.appName = 'formValidate';
             selfed.appVersion = '0.1.0';
 
@@ -42,11 +44,17 @@
         validateAllInputs: function () {
             var selfed = this;
             var $input;
+            var selector;
+            var isAllInlineTestsPassed = true;
 
             //validate each input in the form
             selfed.$inputs.each(function (index, input) {
-                selfed.validateInput($(input));
+                if( !selfed.validateInput($(input)) ){
+                    isAllInlineTestsPassed = false;
+                }
             });
+            
+            selfed.isInlineInputsValid = isAllInlineTestsPassed;
 
             //find first error input
             $input = selfed.$inputs.filter('.invalid').eq(0);
@@ -56,8 +64,25 @@
                 selfed.scrollToElement($input);
             }
 
+            //set focus to error if option is enabled
             if(selfed.options.focusFirstField){
                 selfed.setFocusToInput($input);
+            }
+
+            //check async validation
+            if(selfed.options.asyncURL && selfed.options.asyncPattern){
+                selector = '[' + selfed.options.attributeUsed + '="async"]';
+                $input = selfed.$formElement.find(selector).eq(0);
+                if($input.length){
+                    //make the ajax call
+                    selfed.validateAsync(selfed.options.asyncURL, $input.val())
+                    //.then(selfed.onAsyncValidationSucces, selfed.onAsyncValidationFailure);
+                        .then(function (responseData) {
+                        selfed.onAsyncValidationSucces(responseData, isAllInlineTestsPassed);
+                    }, function (responseData) {
+                        selfed.onAsyncValidationFailure(responseData, isAllInlineTestsPassed);
+                    });
+                }
             }
         },
 
@@ -74,6 +99,8 @@
             var i;
             var j;
 
+
+
             //iterate over all validations for this input
             for(j = validationRules.length - 1; j >= 0; --j){
                 pattern = validationRules[j].pattern;
@@ -88,12 +115,14 @@
 
                         if(result){
                             //test passed
-                            selfed.updateValidationClass($input, validationCheckList[i], true, isAllTestsPassed);
+                            selfed.toggleInputValidationClass($input, validationCheckList[i], true, isAllTestsPassed);
                         }
                         else{
                             //test failed
                             isAllTestsPassed = false;
-                            selfed.updateValidationClass($input, validationCheckList[i], false, isAllTestsPassed);
+                            selfed.isFormValid = false;
+                            selfed.isInlineInputsValid = false;
+                            selfed.toggleInputValidationClass($input, validationCheckList[i], false, isAllTestsPassed);
                             inputErrorList.push(validationRules[j].errorMessage);
                             console.log();
                         }
@@ -103,9 +132,48 @@
 
             //updte error messages
             selfed.updateErrorMessages($input, inputErrorList);
+
+            return isAllTestsPassed;
         },
 
-        updateValidationClass: function ($input, test, isInputValid, isAllTestsPassed) {
+        validateAsync: function (url, subject) {
+            var dfd = new $.Deferred();
+
+            //prepare params for post requuest
+            url = encodeURI(url);
+            subject = encodeURIComponent(subject);
+            //this is where an ajax call will fire
+
+            //mocking ajax with settimeout
+            window.setTimeout(function () {
+                subject = decodeURIComponent(subject);
+
+                //check if subject has atleast a Number, upper & lowercase letter and length is atleast 6
+                if( (subject.search(/\d/) !== -1) && (subject.search('[a-z]') !== -1) && (subject.search('[A-Z]') !== -1) && (subject.length > 5) ){
+                    //console.log('passed');
+                    dfd.resolve(true);
+                }
+                else{
+                    //console.log('failed');
+                    dfd.reject(false);
+                }
+            });
+            return dfd.promise();
+        },
+
+        onAsyncValidationSucces: function (isAsyncTestPassed, isAllInlineTestsPassed) {
+            var selfed = this;
+            selfed.isFormValid = isAsyncTestPassed && isAllInlineTestsPassed;
+            selfed.toggleFormValidationClass( selfed.isFormValid );
+        },
+
+        onAsyncValidationFailure: function (isAsyncTestPassed, isAllInlineTestsPassed) {
+            var selfed = this;
+            selfed.isFormValid = isAsyncTestPassed && isAllInlineTestsPassed;
+            selfed.toggleFormValidationClass( selfed.isFormValid );
+        },
+
+        toggleInputValidationClass: function ($input, test, isInputValid, isAllTestsPassed) {
 
             if(isInputValid){
                 //add success class, remove error class
@@ -118,6 +186,13 @@
             $input
                 .toggleClass('valid', isAllTestsPassed)
                 .toggleClass('invalid', !isAllTestsPassed);
+        },
+
+        toggleFormValidationClass: function (isFormValid) {
+            var selfed = this;
+            selfed.$formElement
+                .toggleClass('valid', isFormValid)
+                .toggleClass('invalid', !isFormValid);
         },
 
         updateErrorMessages: function ($input, inputErrorList) {
@@ -178,7 +253,7 @@
         hideErrorOnChange: false,
         skipHiddenFields: true,
         asyncPattern: true,
-        asyncUrl: ''
+        asyncURL: ''
     };
 
     //default validation rules
@@ -191,7 +266,7 @@
         },
         {
             name: 'required',
-            errorMessage: 'Entry mustn\'t be empty.',
+            errorMessage: 'Entry is mandatory.',
             pattern: /.+/,
             trim: true
         },
@@ -218,7 +293,6 @@
         $('form')
             .has('[' + $.fn.formValidate.options.attributeUsed + ']')
             .each(function (index, formElement) {
-            //$formElement = $(formElement);
             if(!$(formElement).data('formValidate')){
                 $(formElement).formValidate();
             }
