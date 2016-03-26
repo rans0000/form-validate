@@ -14,15 +14,20 @@
                     <label>Name</label>
                     <span class="err_input" data-formmsg="myForm.name"></span>
                 </div>
-                <div class="input">
+                <!--<div class="input">
                     <input type="text" placeholder="Enter Age" data-formvalidate="number" value="12" name="age">
                     <label>Age</label>
                     <span class="err_input" data-formmsg="myForm.age"></span>
-                </div>
+                </div>-->
                 <div class="input">
-                    <input type="text" placeholder="Enter your name" data-formvalidate="email" value="" name="email">
+                    <input type="text" placeholder="Enter your email" data-formvalidate="email" value="" name="email">
                     <label>Email</label>
                     <span class="err_input" data-formmsg="myForm.email"></span>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Enter Mobile No." data-formvalidate="mobile" value="" name="mobile">
+                    <label>Mobile No.</label>
+                    <span class="err_input" data-formmsg="myForm.mobile"></span>
                 </div>
                 <div class="submit-group">
                     <input type="submit" value="Submit">
@@ -41,9 +46,9 @@
                 });
 
                 $.formValidate.addRules({
-                    name: 'email',
-                    errorMessage: 'Entry must be an email.',
-                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    name: 'mobile',
+                    errorMessage: 'Telephone format should be: (+91)-XXX-XXXX-XXX',
+                    pattern: /^\+?(91)?\s?[0-9]{3}([\s\-])?[0-9]{4}([\s\-])?[0-9]{3}$/i,
                     trim: false
                 });
             })();

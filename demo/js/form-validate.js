@@ -82,10 +82,10 @@
 
                         //trim the text if option is set
                         text = (validationRules[j].hasOwnProperty('trim') && validationRules[j].trim) ? currentText.trim() : currentText;
-                        
+
                         //accounting for empty inputs
                         result = (text === '' && validationRules[j].name !== 'required') ? true : pattern.test(text);
-                        
+
                         if(result){
                             //test passed
                             selfed.updateValidationClass($input, validationCheckList[i], true, isAllTestsPassed);
@@ -194,6 +194,12 @@
             errorMessage: 'Entry mustn\'t be empty.',
             pattern: /.+/,
             trim: true
+        },
+        {
+            name: 'email',
+            errorMessage: 'Entry must be an email.',
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            trim: false
         }
     ];
 
@@ -208,7 +214,7 @@
         //go over all the forms in the page
         //check if they have formValidate
         //if so add this form to the plugin
-        
+
         $('form')
             .has('[' + $.fn.formValidate.options.attributeUsed + ']')
             .each(function (index, formElement) {
