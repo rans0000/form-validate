@@ -58,6 +58,10 @@
                     pattern: /^\+?(91)?\s?[0-9]{3}([\s\-])?[0-9]{4}([\s\-])?[0-9]{3}$/i,
                     trim: false
                 });
+                
+                $('form').on('formValidate/submit', function (event, data) {
+                    console.log('handling submission');
+                })
             })();
         </script>
     </body>

@@ -25,6 +25,10 @@ form{
     border: 1px solid  #ddd;
     margin: auto;
     box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    transition: .3s;
+}
+form.invalid{
+    /*border-top-color: #b41515;*/
 }
 .input{
     display: -webkit-flex;

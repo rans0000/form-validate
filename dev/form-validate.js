@@ -36,7 +36,6 @@
             //bind form submit event
             selfed.$formElement.on('submit', function (event) {
                 event.preventDefault();
-                console.log('submit fired');
                 selfed.validateAllInputs();
             });
         },
@@ -124,7 +123,6 @@
                             selfed.isInlineInputsValid = false;
                             selfed.toggleInputValidationClass($input, validationCheckList[i], false, isAllTestsPassed);
                             inputErrorList.push(validationRules[j].errorMessage);
-                            console.log();
                         }
                     }
                 }
@@ -165,6 +163,7 @@
             var selfed = this;
             selfed.isFormValid = isAsyncTestPassed && isAllInlineTestsPassed;
             selfed.toggleFormValidationClass( selfed.isFormValid );
+            selfed.$formElement.trigger('formValidate/submit', selfed);
         },
 
         onAsyncValidationFailure: function (isAsyncTestPassed, isAllInlineTestsPassed) {
