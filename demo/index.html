@@ -23,16 +23,21 @@
                     <input type="submit" value="Submit">
                 </div>
             </form>-->
-            <form>
-                <input type="text" data-formvalidate="number" value="12">
+            <form name="myForm">
+                <div data-formmsg="myForm"></div>
                 <br>
-                <input type="text" data-formvalidate="number, required" value="56">
+                <input type="text" data-formvalidate="number" value="12" name="age">
+                <span data-formmsg="myForm.age"></span>
+                <br>
+                <input type="text" data-formvalidate="number, required" value="56" name="req">
+                <span data-formmsg="myForm.req"></span>
                 <br>
                 <input type="submit" value="Submit">
             </form>
         </div>
         <script src="js/jquery-1.12.2.min.js"></script>
-        <script src="js/form-validate.min.js"></script>
+        <script src="js/form-validate.js"></script>
+        <!--<script src="js/form-validate.min.js"></script>-->
         <script>
             (function(){
                 $('form').formValidate({

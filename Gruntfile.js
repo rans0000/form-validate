@@ -10,32 +10,33 @@ module.exports = function(grunt) {
                 }
             }
         },
-        //        copy: {
-        //            main: {
-        //                files: [
-        //                    {
-        //                        expand: false,
-        //                        flatten: true,
-        //                        src: 'dev/**/form-validate.min.js',
-        //                        dest: 'demo/js/*'
-        //                    }
-        //                ]
-        //            }
-        //        },
-        rename: {
+        copy: {
             main: {
                 files: [
                     {
-                        src: ['dev/form-validate.min.js'],
-                        dest: 'demo/js/form-validate.min.js'
-                    },
+                        expand: true,
+                        flatten: true,
+                        cwd: 'dev/',
+                        src: '*',
+                        dest: 'demo/js/'
+                    }
                 ]
             }
         },
+        //        rename: {
+        //            main: {
+        //                files: [
+        //                    {
+        //                        src: ['dev/form-validate.min.js'],
+        //                        dest: 'demo/js/form-validate.min.js'
+        //                    },
+        //                ]
+        //            }
+        //        },
         watch: {
             scripts: {
                 files: ['dev/form-validate.js'],
-                tasks: ['uglify', 'rename'],
+                tasks: ['uglify', 'copy'],
                 options: {
                     spawn: false,
                 },
@@ -44,8 +45,8 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    //    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-rename');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    //    grunt.loadNpmTasks('grunt-contrib-rename');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['watch']);
