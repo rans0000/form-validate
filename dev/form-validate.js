@@ -34,6 +34,7 @@
             //bind form submit event
             selfed.$formElement.on('submit', function (event) {
                 event.preventDefault();
+                console.log('submit fired');
                 selfed.validateAllInputs();
             });
         },
@@ -47,11 +48,16 @@
                 selfed.validateInput($(input));
             });
 
+            //find first error input
+            $input = selfed.$inputs.filter('.invalid').eq(0);
+
             //scroll to error if option is enabled
             if(selfed.options.scroll){
-                //find first error input
-                $input = selfed.$inputs.filter('.invalid').eq(0);
                 selfed.scrollToElement($input);
+            }
+
+            if(selfed.options.focusFirstField){
+                selfed.setFocusToInput($input);
             }
         },
 
@@ -141,6 +147,10 @@
                     scrollTop: $element.offset().top - 10
                 }, 300);
             }
+        },
+
+        setFocusToInput: function ($input) {
+            $input.focus();
         }
     };
     //plugin Class ends
@@ -186,5 +196,22 @@
     $.fn.formValidate.addRules = function (configObj) {
         $.fn.formValidate.validationRules.push(configObj);
     };
+
+    $.formValidate = $.fn.formValidate;
+
+    $(document).on('ready', function () {
+        //go over all the forms in the page
+        //check if they have formValidate
+        //if so add this form to the plugin
+        
+        $('form')
+            .has('[' + $.fn.formValidate.options.attributeUsed + ']')
+            .each(function (index, formElement) {
+            //$formElement = $(formElement);
+            if(!$(formElement).data('formValidate')){
+                $(formElement).formValidate();
+            }
+        });
+    });
 
 })(jQuery, window, document);
