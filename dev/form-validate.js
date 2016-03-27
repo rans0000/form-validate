@@ -52,7 +52,7 @@
                     isAllInlineTestsPassed = false;
                 }
             });
-            
+
             selfed.isInlineInputsValid = isAllInlineTestsPassed;
 
             //find first error input
@@ -161,15 +161,30 @@
 
         onAsyncValidationSucces: function (isAsyncTestPassed, isAllInlineTestsPassed) {
             var selfed = this;
+            var selector;
+            var $input;
+            
             selfed.isFormValid = isAsyncTestPassed && isAllInlineTestsPassed;
             selfed.toggleFormValidationClass( selfed.isFormValid );
             selfed.$formElement.trigger('formValidate/submit', selfed);
+
+            selector = '[' + selfed.options.attributeUsed + '="async"]';
+            $input = selfed.$formElement.find(selector).eq(0);
+            selfed.toggleInputValidationClass($input, 'async', isAsyncTestPassed, isAsyncTestPassed);
         },
 
         onAsyncValidationFailure: function (isAsyncTestPassed, isAllInlineTestsPassed) {
             var selfed = this;
+            var selector;
+            var $input;
+            
             selfed.isFormValid = isAsyncTestPassed && isAllInlineTestsPassed;
             selfed.toggleFormValidationClass( selfed.isFormValid );
+            
+            selector = '[' + selfed.options.attributeUsed + '="async"]';
+            $input = selfed.$formElement.find(selector).eq(0);
+            selfed.toggleInputValidationClass($input, 'async', isAsyncTestPassed, isAsyncTestPassed);
+            selfed.updateErrorMessages($input, ['Must be at least 6 characters long, and contain at least one number, one uppercase and one lowercase letter.']);
         },
 
         toggleInputValidationClass: function ($input, test, isInputValid, isAllTestsPassed) {

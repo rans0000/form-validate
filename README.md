@@ -61,10 +61,10 @@ $('form').formValidate({
 ```
 
 ##Error messages & Styling
-To display error messages, both the form and input need 'name' attribute.
+To display error messages, both the form and input need the 'name' attribute.
 Error messages will be updated to any element that has attribute 'data-formmsg'.
 To display form level errors use the form's name as the value of data-formmsg.
-Input level errors, data-formmsg shoul contail a value of 'form name' and 'input name' concatenated with a dot(*);
+Input level errors, data-formmsg shoul contail a value of *'form name'* and *'input name'* concatenated with a dot (*);
 ```
 <form name="myForm">
     <input type="text" data-formvalidate="number" name="age">
@@ -77,4 +77,6 @@ Input level errors, data-formmsg shoul contail a value of 'form name' and 'input
 ###Styling (CSS Classess):
 formValidate.js dosen't add any CSS rules. Instead, it adds classes *'valid'* and *'invalid'* to input elements when validation is triggered.
 It also adds classes related to validation types, ex: 'required' type will trigger 'required-invalid' & 'required-valid' classes for corresponding states.
-Form element has *valid* and *invalid* classes updated on submit event.
+Form element has *'valid'* and *'invalid'* classes updated on submit event.
+
+demo: http://iamrans.com/experiments/form-validate/
